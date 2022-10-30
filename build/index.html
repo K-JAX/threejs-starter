@@ -6,9 +6,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>ThreeJS Play</title>
 		<script defer src="./script.js"></script>
+		<link rel="stylesheet" href="./script.css" />
 	</head>
 	<body>
-		<h1>ThreeJS Play</h1>
-		<div id="root"></div>
+		<div class="heading panel">
+			<h1>
+				<svg width="280" height="75">
+					<text x="0" y="50" fill="#cffcff" filter="url(#blueblur)" alignment-baseline="middle">ThreeJS Play</text>
+					<defs>
+						<filter id="blueblur" x="0" y="0" width="200%" height="200%" >
+							<feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
+							<feColorMatrix result="matrixOut" in="offOut" type="matrix"
+							values="0.1 0.1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0" />
+							<feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="10" />
+							<feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+						</filter>
+					</defs>
+				</svg>
+			</h1>
+		</div>	
+		<div class="stage">
+			<div id="three-root"></div>
+		</div>
 	</body>
 </html>

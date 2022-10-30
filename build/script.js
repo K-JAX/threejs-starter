@@ -2365,10 +2365,10 @@
       this.max.set(maxX, maxY, maxZ);
       return this;
     }
-    setFromPoints(points2) {
+    setFromPoints(points) {
       this.makeEmpty();
-      for (let i = 0, il = points2.length; i < il; i++) {
-        this.expandByPoint(points2[i]);
+      for (let i = 0, il = points.length; i < il; i++) {
+        this.expandByPoint(points[i]);
       }
       return this;
     }
@@ -2626,16 +2626,16 @@
       this.radius = radius;
       return this;
     }
-    setFromPoints(points2, optionalCenter) {
+    setFromPoints(points, optionalCenter) {
       const center = this.center;
       if (optionalCenter !== void 0) {
         center.copy(optionalCenter);
       } else {
-        _box$2.setFromPoints(points2).getCenter(center);
+        _box$2.setFromPoints(points).getCenter(center);
       }
       let maxRadiusSq = 0;
-      for (let i = 0, il = points2.length; i < il; i++) {
-        maxRadiusSq = Math.max(maxRadiusSq, center.distanceToSquared(points2[i]));
+      for (let i = 0, il = points.length; i < il; i++) {
+        maxRadiusSq = Math.max(maxRadiusSq, center.distanceToSquared(points[i]));
       }
       this.radius = Math.sqrt(maxRadiusSq);
       return this;
@@ -4335,10 +4335,10 @@
       this.c.copy(c);
       return this;
     }
-    setFromPointsAndIndices(points2, i0, i1, i2) {
-      this.a.copy(points2[i0]);
-      this.b.copy(points2[i1]);
-      this.c.copy(points2[i2]);
+    setFromPointsAndIndices(points, i0, i1, i2) {
+      this.a.copy(points[i0]);
+      this.b.copy(points[i1]);
+      this.c.copy(points[i2]);
       return this;
     }
     setFromAttributeAndIndices(attribute, i0, i1, i2) {
@@ -5692,10 +5692,10 @@
       this.translate(_offset.x, _offset.y, _offset.z);
       return this;
     }
-    setFromPoints(points2) {
+    setFromPoints(points) {
       const position = [];
-      for (let i = 0, l = points2.length; i < l; i++) {
-        const point = points2[i];
+      for (let i = 0, l = points.length; i < l; i++) {
+        const point = points[i];
         position.push(point.x, point.y, point.z || 0);
       }
       this.setAttribute("position", new Float32BufferAttribute(position, 3));
@@ -8088,11 +8088,11 @@
         if (updateBuffers)
           saveCache(geometry2, index);
       } else {
-        const wireframe = material2.wireframe === true;
-        if (currentState.geometry !== geometry2.id || currentState.program !== program.id || currentState.wireframe !== wireframe) {
+        const wireframe2 = material2.wireframe === true;
+        if (currentState.geometry !== geometry2.id || currentState.program !== program.id || currentState.wireframe !== wireframe2) {
           currentState.geometry = geometry2.id;
           currentState.program = program.id;
-          currentState.wireframe = wireframe;
+          currentState.wireframe = wireframe2;
           updateBuffers = true;
         }
       }
@@ -8125,7 +8125,7 @@
       return extension.deleteVertexArrayOES(vao);
     }
     function getBindingState(geometry2, program, material2) {
-      const wireframe = material2.wireframe === true;
+      const wireframe2 = material2.wireframe === true;
       let programMap = bindingStates[geometry2.id];
       if (programMap === void 0) {
         programMap = {};
@@ -8136,10 +8136,10 @@
         stateMap = {};
         programMap[program.id] = stateMap;
       }
-      let state = stateMap[wireframe];
+      let state = stateMap[wireframe2];
       if (state === void 0) {
         state = createBindingState(createVertexArrayObject());
-        stateMap[wireframe] = state;
+        stateMap[wireframe2] = state;
       }
       return state;
     }
@@ -8338,9 +8338,9 @@
         const programMap = bindingStates[geometryId];
         for (const programId in programMap) {
           const stateMap = programMap[programId];
-          for (const wireframe in stateMap) {
-            deleteVertexArrayObject(stateMap[wireframe].object);
-            delete stateMap[wireframe];
+          for (const wireframe2 in stateMap) {
+            deleteVertexArrayObject(stateMap[wireframe2].object);
+            delete stateMap[wireframe2];
           }
           delete programMap[programId];
         }
@@ -8353,9 +8353,9 @@
       const programMap = bindingStates[geometry2.id];
       for (const programId in programMap) {
         const stateMap = programMap[programId];
-        for (const wireframe in stateMap) {
-          deleteVertexArrayObject(stateMap[wireframe].object);
-          delete stateMap[wireframe];
+        for (const wireframe2 in stateMap) {
+          deleteVertexArrayObject(stateMap[wireframe2].object);
+          delete stateMap[wireframe2];
         }
         delete programMap[programId];
       }
@@ -8367,9 +8367,9 @@
         if (programMap[program.id] === void 0)
           continue;
         const stateMap = programMap[program.id];
-        for (const wireframe in stateMap) {
-          deleteVertexArrayObject(stateMap[wireframe].object);
-          delete stateMap[wireframe];
+        for (const wireframe2 in stateMap) {
+          deleteVertexArrayObject(stateMap[wireframe2].object);
+          delete stateMap[wireframe2];
         }
         delete programMap[program.id];
       }
@@ -10952,8 +10952,8 @@
     _getShaderStage(code) {
       const cache = this.shaderCache;
       if (cache.has(code) === false) {
-        const stage = new WebGLShaderStage();
-        cache.set(code, stage);
+        const stage2 = new WebGLShaderStage();
+        cache.set(code, stage2);
       }
       return cache.get(code);
     }
@@ -11541,12 +11541,12 @@
   function UniformsCache() {
     const lights = {};
     return {
-      get: function(light) {
-        if (lights[light.id] !== void 0) {
-          return lights[light.id];
+      get: function(light2) {
+        if (lights[light2.id] !== void 0) {
+          return lights[light2.id];
         }
         let uniforms;
-        switch (light.type) {
+        switch (light2.type) {
           case "DirectionalLight":
             uniforms = {
               direction: new Vector3(),
@@ -11588,7 +11588,7 @@
             };
             break;
         }
-        lights[light.id] = uniforms;
+        lights[light2.id] = uniforms;
         return uniforms;
       }
     };
@@ -11596,12 +11596,12 @@
   function ShadowUniformsCache() {
     const lights = {};
     return {
-      get: function(light) {
-        if (lights[light.id] !== void 0) {
-          return lights[light.id];
+      get: function(light2) {
+        if (lights[light2.id] !== void 0) {
+          return lights[light2.id];
         }
         let uniforms;
-        switch (light.type) {
+        switch (light2.type) {
           case "DirectionalLight":
             uniforms = {
               shadowBias: 0,
@@ -11629,7 +11629,7 @@
             };
             break;
         }
-        lights[light.id] = uniforms;
+        lights[light2.id] = uniforms;
         return uniforms;
       }
     };
@@ -11692,73 +11692,73 @@
       lights.sort(shadowCastingLightsFirst);
       const scaleFactor = physicallyCorrectLights !== true ? Math.PI : 1;
       for (let i = 0, l = lights.length; i < l; i++) {
-        const light = lights[i];
-        const color = light.color;
-        const intensity = light.intensity;
-        const distance = light.distance;
-        const shadowMap = light.shadow && light.shadow.map ? light.shadow.map.texture : null;
-        if (light.isAmbientLight) {
+        const light2 = lights[i];
+        const color = light2.color;
+        const intensity = light2.intensity;
+        const distance = light2.distance;
+        const shadowMap = light2.shadow && light2.shadow.map ? light2.shadow.map.texture : null;
+        if (light2.isAmbientLight) {
           r += color.r * intensity * scaleFactor;
           g += color.g * intensity * scaleFactor;
           b += color.b * intensity * scaleFactor;
-        } else if (light.isLightProbe) {
+        } else if (light2.isLightProbe) {
           for (let j = 0; j < 9; j++) {
-            state.probe[j].addScaledVector(light.sh.coefficients[j], intensity);
+            state.probe[j].addScaledVector(light2.sh.coefficients[j], intensity);
           }
-        } else if (light.isDirectionalLight) {
-          const uniforms = cache.get(light);
-          uniforms.color.copy(light.color).multiplyScalar(light.intensity * scaleFactor);
-          if (light.castShadow) {
-            const shadow = light.shadow;
-            const shadowUniforms = shadowCache.get(light);
+        } else if (light2.isDirectionalLight) {
+          const uniforms = cache.get(light2);
+          uniforms.color.copy(light2.color).multiplyScalar(light2.intensity * scaleFactor);
+          if (light2.castShadow) {
+            const shadow = light2.shadow;
+            const shadowUniforms = shadowCache.get(light2);
             shadowUniforms.shadowBias = shadow.bias;
             shadowUniforms.shadowNormalBias = shadow.normalBias;
             shadowUniforms.shadowRadius = shadow.radius;
             shadowUniforms.shadowMapSize = shadow.mapSize;
             state.directionalShadow[directionalLength] = shadowUniforms;
             state.directionalShadowMap[directionalLength] = shadowMap;
-            state.directionalShadowMatrix[directionalLength] = light.shadow.matrix;
+            state.directionalShadowMatrix[directionalLength] = light2.shadow.matrix;
             numDirectionalShadows++;
           }
           state.directional[directionalLength] = uniforms;
           directionalLength++;
-        } else if (light.isSpotLight) {
-          const uniforms = cache.get(light);
-          uniforms.position.setFromMatrixPosition(light.matrixWorld);
+        } else if (light2.isSpotLight) {
+          const uniforms = cache.get(light2);
+          uniforms.position.setFromMatrixPosition(light2.matrixWorld);
           uniforms.color.copy(color).multiplyScalar(intensity * scaleFactor);
           uniforms.distance = distance;
-          uniforms.coneCos = Math.cos(light.angle);
-          uniforms.penumbraCos = Math.cos(light.angle * (1 - light.penumbra));
-          uniforms.decay = light.decay;
-          if (light.castShadow) {
-            const shadow = light.shadow;
-            const shadowUniforms = shadowCache.get(light);
+          uniforms.coneCos = Math.cos(light2.angle);
+          uniforms.penumbraCos = Math.cos(light2.angle * (1 - light2.penumbra));
+          uniforms.decay = light2.decay;
+          if (light2.castShadow) {
+            const shadow = light2.shadow;
+            const shadowUniforms = shadowCache.get(light2);
             shadowUniforms.shadowBias = shadow.bias;
             shadowUniforms.shadowNormalBias = shadow.normalBias;
             shadowUniforms.shadowRadius = shadow.radius;
             shadowUniforms.shadowMapSize = shadow.mapSize;
             state.spotShadow[spotLength] = shadowUniforms;
             state.spotShadowMap[spotLength] = shadowMap;
-            state.spotShadowMatrix[spotLength] = light.shadow.matrix;
+            state.spotShadowMatrix[spotLength] = light2.shadow.matrix;
             numSpotShadows++;
           }
           state.spot[spotLength] = uniforms;
           spotLength++;
-        } else if (light.isRectAreaLight) {
-          const uniforms = cache.get(light);
+        } else if (light2.isRectAreaLight) {
+          const uniforms = cache.get(light2);
           uniforms.color.copy(color).multiplyScalar(intensity);
-          uniforms.halfWidth.set(light.width * 0.5, 0, 0);
-          uniforms.halfHeight.set(0, light.height * 0.5, 0);
+          uniforms.halfWidth.set(light2.width * 0.5, 0, 0);
+          uniforms.halfHeight.set(0, light2.height * 0.5, 0);
           state.rectArea[rectAreaLength] = uniforms;
           rectAreaLength++;
-        } else if (light.isPointLight) {
-          const uniforms = cache.get(light);
-          uniforms.color.copy(light.color).multiplyScalar(light.intensity * scaleFactor);
-          uniforms.distance = light.distance;
-          uniforms.decay = light.decay;
-          if (light.castShadow) {
-            const shadow = light.shadow;
-            const shadowUniforms = shadowCache.get(light);
+        } else if (light2.isPointLight) {
+          const uniforms = cache.get(light2);
+          uniforms.color.copy(light2.color).multiplyScalar(light2.intensity * scaleFactor);
+          uniforms.distance = light2.distance;
+          uniforms.decay = light2.decay;
+          if (light2.castShadow) {
+            const shadow = light2.shadow;
+            const shadowUniforms = shadowCache.get(light2);
             shadowUniforms.shadowBias = shadow.bias;
             shadowUniforms.shadowNormalBias = shadow.normalBias;
             shadowUniforms.shadowRadius = shadow.radius;
@@ -11767,15 +11767,15 @@
             shadowUniforms.shadowCameraFar = shadow.camera.far;
             state.pointShadow[pointLength] = shadowUniforms;
             state.pointShadowMap[pointLength] = shadowMap;
-            state.pointShadowMatrix[pointLength] = light.shadow.matrix;
+            state.pointShadowMatrix[pointLength] = light2.shadow.matrix;
             numPointShadows++;
           }
           state.point[pointLength] = uniforms;
           pointLength++;
-        } else if (light.isHemisphereLight) {
-          const uniforms = cache.get(light);
-          uniforms.skyColor.copy(light.color).multiplyScalar(intensity * scaleFactor);
-          uniforms.groundColor.copy(light.groundColor).multiplyScalar(intensity * scaleFactor);
+        } else if (light2.isHemisphereLight) {
+          const uniforms = cache.get(light2);
+          uniforms.skyColor.copy(light2.color).multiplyScalar(intensity * scaleFactor);
+          uniforms.groundColor.copy(light2.groundColor).multiplyScalar(intensity * scaleFactor);
           state.hemi[hemiLength] = uniforms;
           hemiLength++;
         }
@@ -11834,44 +11834,44 @@
       let hemiLength = 0;
       const viewMatrix = camera2.matrixWorldInverse;
       for (let i = 0, l = lights.length; i < l; i++) {
-        const light = lights[i];
-        if (light.isDirectionalLight) {
+        const light2 = lights[i];
+        if (light2.isDirectionalLight) {
           const uniforms = state.directional[directionalLength];
-          uniforms.direction.setFromMatrixPosition(light.matrixWorld);
-          vector3.setFromMatrixPosition(light.target.matrixWorld);
+          uniforms.direction.setFromMatrixPosition(light2.matrixWorld);
+          vector3.setFromMatrixPosition(light2.target.matrixWorld);
           uniforms.direction.sub(vector3);
           uniforms.direction.transformDirection(viewMatrix);
           directionalLength++;
-        } else if (light.isSpotLight) {
+        } else if (light2.isSpotLight) {
           const uniforms = state.spot[spotLength];
-          uniforms.position.setFromMatrixPosition(light.matrixWorld);
+          uniforms.position.setFromMatrixPosition(light2.matrixWorld);
           uniforms.position.applyMatrix4(viewMatrix);
-          uniforms.direction.setFromMatrixPosition(light.matrixWorld);
-          vector3.setFromMatrixPosition(light.target.matrixWorld);
+          uniforms.direction.setFromMatrixPosition(light2.matrixWorld);
+          vector3.setFromMatrixPosition(light2.target.matrixWorld);
           uniforms.direction.sub(vector3);
           uniforms.direction.transformDirection(viewMatrix);
           spotLength++;
-        } else if (light.isRectAreaLight) {
+        } else if (light2.isRectAreaLight) {
           const uniforms = state.rectArea[rectAreaLength];
-          uniforms.position.setFromMatrixPosition(light.matrixWorld);
+          uniforms.position.setFromMatrixPosition(light2.matrixWorld);
           uniforms.position.applyMatrix4(viewMatrix);
           matrix42.identity();
-          matrix4.copy(light.matrixWorld);
+          matrix4.copy(light2.matrixWorld);
           matrix4.premultiply(viewMatrix);
           matrix42.extractRotation(matrix4);
-          uniforms.halfWidth.set(light.width * 0.5, 0, 0);
-          uniforms.halfHeight.set(0, light.height * 0.5, 0);
+          uniforms.halfWidth.set(light2.width * 0.5, 0, 0);
+          uniforms.halfHeight.set(0, light2.height * 0.5, 0);
           uniforms.halfWidth.applyMatrix4(matrix42);
           uniforms.halfHeight.applyMatrix4(matrix42);
           rectAreaLength++;
-        } else if (light.isPointLight) {
+        } else if (light2.isPointLight) {
           const uniforms = state.point[pointLength];
-          uniforms.position.setFromMatrixPosition(light.matrixWorld);
+          uniforms.position.setFromMatrixPosition(light2.matrixWorld);
           uniforms.position.applyMatrix4(viewMatrix);
           pointLength++;
-        } else if (light.isHemisphereLight) {
+        } else if (light2.isHemisphereLight) {
           const uniforms = state.hemi[hemiLength];
-          uniforms.direction.setFromMatrixPosition(light.matrixWorld);
+          uniforms.direction.setFromMatrixPosition(light2.matrixWorld);
           uniforms.direction.transformDirection(viewMatrix);
           uniforms.direction.normalize();
           hemiLength++;
@@ -11892,8 +11892,8 @@
       lightsArray.length = 0;
       shadowsArray.length = 0;
     }
-    function pushLight(light) {
-      lightsArray.push(light);
+    function pushLight(light2) {
+      lightsArray.push(light2);
     }
     function pushShadow(shadowLight) {
       shadowsArray.push(shadowLight);
@@ -12045,10 +12045,10 @@
       _state.buffers.depth.setTest(true);
       _state.setScissorTest(false);
       for (let i = 0, il = lights.length; i < il; i++) {
-        const light = lights[i];
-        const shadow = light.shadow;
+        const light2 = lights[i];
+        const shadow = light2.shadow;
         if (shadow === void 0) {
-          console.warn("THREE.WebGLShadowMap:", light, "has no shadow.");
+          console.warn("THREE.WebGLShadowMap:", light2, "has no shadow.");
           continue;
         }
         if (shadow.autoUpdate === false && shadow.needsUpdate === false)
@@ -12072,14 +12072,14 @@
         if (shadow.map === null && !shadow.isPointLightShadow && this.type === VSMShadowMap) {
           const pars = {minFilter: LinearFilter, magFilter: LinearFilter, format: RGBAFormat};
           shadow.map = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
-          shadow.map.texture.name = light.name + ".shadowMap";
+          shadow.map.texture.name = light2.name + ".shadowMap";
           shadow.mapPass = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
           shadow.camera.updateProjectionMatrix();
         }
         if (shadow.map === null) {
           const pars = {minFilter: NearestFilter, magFilter: NearestFilter, format: RGBAFormat};
           shadow.map = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
-          shadow.map.texture.name = light.name + ".shadowMap";
+          shadow.map.texture.name = light2.name + ".shadowMap";
           shadow.camera.updateProjectionMatrix();
         }
         _renderer.setRenderTarget(shadow.map);
@@ -12089,9 +12089,9 @@
           const viewport = shadow.getViewport(vp);
           _viewport.set(_viewportSize.x * viewport.x, _viewportSize.y * viewport.y, _viewportSize.x * viewport.z, _viewportSize.y * viewport.w);
           _state.viewport(_viewport);
-          shadow.updateMatrices(light, vp);
+          shadow.updateMatrices(light2, vp);
           _frustum = shadow.getFrustum();
-          renderObject(scene2, camera2, shadow.camera, light, this.type);
+          renderObject(scene2, camera2, shadow.camera, light2, this.type);
         }
         if (!shadow.isPointLightShadow && this.type === VSMShadowMap) {
           VSMPass(shadow, camera2);
@@ -12122,13 +12122,13 @@
       _renderer.clear();
       _renderer.renderBufferDirect(camera2, null, geometry2, shadowMaterialHorizontal, fullScreenMesh, null);
     }
-    function getDepthMaterial(object, geometry2, material2, light, shadowCameraNear, shadowCameraFar, type) {
+    function getDepthMaterial(object, geometry2, material2, light2, shadowCameraNear, shadowCameraFar, type) {
       let result = null;
-      const customMaterial = light.isPointLight === true ? object.customDistanceMaterial : object.customDepthMaterial;
+      const customMaterial = light2.isPointLight === true ? object.customDistanceMaterial : object.customDepthMaterial;
       if (customMaterial !== void 0) {
         result = customMaterial;
       } else {
-        result = light.isPointLight === true ? _distanceMaterial : _depthMaterial;
+        result = light2.isPointLight === true ? _distanceMaterial : _depthMaterial;
       }
       if (_renderer.localClippingEnabled && material2.clipShadows === true && material2.clippingPlanes.length !== 0 || material2.displacementMap && material2.displacementScale !== 0 || material2.alphaMap && material2.alphaTest > 0) {
         const keyA = result.uuid, keyB = material2.uuid;
@@ -12161,14 +12161,14 @@
       result.displacementBias = material2.displacementBias;
       result.wireframeLinewidth = material2.wireframeLinewidth;
       result.linewidth = material2.linewidth;
-      if (light.isPointLight === true && result.isMeshDistanceMaterial === true) {
-        result.referencePosition.setFromMatrixPosition(light.matrixWorld);
+      if (light2.isPointLight === true && result.isMeshDistanceMaterial === true) {
+        result.referencePosition.setFromMatrixPosition(light2.matrixWorld);
         result.nearDistance = shadowCameraNear;
         result.farDistance = shadowCameraFar;
       }
       return result;
     }
-    function renderObject(object, camera2, shadowCamera, light, type) {
+    function renderObject(object, camera2, shadowCamera, light2, type) {
       if (object.visible === false)
         return;
       const visible = object.layers.test(camera2.layers);
@@ -12183,19 +12183,19 @@
               const group = groups[k];
               const groupMaterial = material2[group.materialIndex];
               if (groupMaterial && groupMaterial.visible) {
-                const depthMaterial = getDepthMaterial(object, geometry2, groupMaterial, light, shadowCamera.near, shadowCamera.far, type);
+                const depthMaterial = getDepthMaterial(object, geometry2, groupMaterial, light2, shadowCamera.near, shadowCamera.far, type);
                 _renderer.renderBufferDirect(shadowCamera, null, geometry2, depthMaterial, object, group);
               }
             }
           } else if (material2.visible) {
-            const depthMaterial = getDepthMaterial(object, geometry2, material2, light, shadowCamera.near, shadowCamera.far, type);
+            const depthMaterial = getDepthMaterial(object, geometry2, material2, light2, shadowCamera.near, shadowCamera.far, type);
             _renderer.renderBufferDirect(shadowCamera, null, geometry2, depthMaterial, object, null);
           }
         }
       }
       const children = object.children;
       for (let i = 0, l = children.length; i < l; i++) {
-        renderObject(children[i], camera2, shadowCamera, light, type);
+        renderObject(children[i], camera2, shadowCamera, light2, type);
       }
     }
   }
@@ -17036,18 +17036,18 @@
       return this.getPoint(t, optionalTarget);
     }
     getPoints(divisions = 5) {
-      const points2 = [];
+      const points = [];
       for (let d = 0; d <= divisions; d++) {
-        points2.push(this.getPoint(d / divisions));
+        points.push(this.getPoint(d / divisions));
       }
-      return points2;
+      return points;
     }
     getSpacedPoints(divisions = 5) {
-      const points2 = [];
+      const points = [];
       for (let d = 0; d <= divisions; d++) {
-        points2.push(this.getPointAt(d / divisions));
+        points.push(this.getPointAt(d / divisions));
       }
-      return points2;
+      return points;
     }
     getLength() {
       const lengths = this.getLengths();
@@ -17335,18 +17335,18 @@
   var py = new CubicPoly();
   var pz = new CubicPoly();
   var CatmullRomCurve3 = class extends Curve {
-    constructor(points2 = [], closed = false, curveType = "centripetal", tension = 0.5) {
+    constructor(points = [], closed = false, curveType = "centripetal", tension = 0.5) {
       super();
       this.type = "CatmullRomCurve3";
-      this.points = points2;
+      this.points = points;
       this.closed = closed;
       this.curveType = curveType;
       this.tension = tension;
     }
     getPoint(t, optionalTarget = new Vector3()) {
       const point = optionalTarget;
-      const points2 = this.points;
-      const l = points2.length;
+      const points = this.points;
+      const l = points.length;
       const p = (l - (this.closed ? 0 : 1)) * t;
       let intPoint = Math.floor(p);
       let weight = p - intPoint;
@@ -17358,17 +17358,17 @@
       }
       let p0, p3;
       if (this.closed || intPoint > 0) {
-        p0 = points2[(intPoint - 1) % l];
+        p0 = points[(intPoint - 1) % l];
       } else {
-        tmp.subVectors(points2[0], points2[1]).add(points2[0]);
+        tmp.subVectors(points[0], points[1]).add(points[0]);
         p0 = tmp;
       }
-      const p1 = points2[intPoint % l];
-      const p2 = points2[(intPoint + 1) % l];
+      const p1 = points[intPoint % l];
+      const p2 = points[(intPoint + 1) % l];
       if (this.closed || intPoint + 2 < l) {
-        p3 = points2[(intPoint + 2) % l];
+        p3 = points[(intPoint + 2) % l];
       } else {
-        tmp.subVectors(points2[l - 1], points2[l - 2]).add(points2[l - 1]);
+        tmp.subVectors(points[l - 1], points[l - 2]).add(points[l - 1]);
         p3 = tmp;
       }
       if (this.curveType === "centripetal" || this.curveType === "chordal") {
@@ -17710,21 +17710,21 @@
   };
   QuadraticBezierCurve3.prototype.isQuadraticBezierCurve3 = true;
   var SplineCurve = class extends Curve {
-    constructor(points2 = []) {
+    constructor(points = []) {
       super();
       this.type = "SplineCurve";
-      this.points = points2;
+      this.points = points;
     }
     getPoint(t, optionalTarget = new Vector2()) {
       const point = optionalTarget;
-      const points2 = this.points;
-      const p = (points2.length - 1) * t;
+      const points = this.points;
+      const p = (points.length - 1) * t;
       const intPoint = Math.floor(p);
       const weight = p - intPoint;
-      const p0 = points2[intPoint === 0 ? intPoint : intPoint - 1];
-      const p1 = points2[intPoint];
-      const p2 = points2[intPoint > points2.length - 2 ? points2.length - 1 : intPoint + 1];
-      const p3 = points2[intPoint > points2.length - 3 ? points2.length - 1 : intPoint + 2];
+      const p0 = points[intPoint === 0 ? intPoint : intPoint - 1];
+      const p1 = points[intPoint];
+      const p2 = points[intPoint > points.length - 2 ? points.length - 1 : intPoint + 1];
+      const p3 = points[intPoint > points.length - 3 ? points.length - 1 : intPoint + 2];
       point.set(CatmullRom(weight, p0.x, p1.x, p2.x, p3.x), CatmullRom(weight, p0.y, p1.y, p2.y, p3.y));
       return point;
     }
@@ -17826,17 +17826,17 @@
       return lengths;
     }
     getSpacedPoints(divisions = 40) {
-      const points2 = [];
+      const points = [];
       for (let i = 0; i <= divisions; i++) {
-        points2.push(this.getPoint(i / divisions));
+        points.push(this.getPoint(i / divisions));
       }
       if (this.autoClose) {
-        points2.push(points2[0]);
+        points.push(points[0]);
       }
-      return points2;
+      return points;
     }
     getPoints(divisions = 12) {
-      const points2 = [];
+      const points = [];
       let last;
       for (let i = 0, curves = this.curves; i < curves.length; i++) {
         const curve = curves[i];
@@ -17846,14 +17846,14 @@
           const point = pts[j];
           if (last && last.equals(point))
             continue;
-          points2.push(point);
+          points.push(point);
           last = point;
         }
       }
-      if (this.autoClose && points2.length > 1 && !points2[points2.length - 1].equals(points2[0])) {
-        points2.push(points2[0]);
+      if (this.autoClose && points.length > 1 && !points[points.length - 1].equals(points[0])) {
+        points.push(points[0]);
       }
-      return points2;
+      return points;
     }
     copy(source) {
       super.copy(source);
@@ -17887,18 +17887,18 @@
     }
   };
   var Path = class extends CurvePath {
-    constructor(points2) {
+    constructor(points) {
       super();
       this.type = "Path";
       this.currentPoint = new Vector2();
-      if (points2) {
-        this.setFromPoints(points2);
+      if (points) {
+        this.setFromPoints(points);
       }
     }
-    setFromPoints(points2) {
-      this.moveTo(points2[0].x, points2[0].y);
-      for (let i = 1, l = points2.length; i < l; i++) {
-        this.lineTo(points2[i].x, points2[i].y);
+    setFromPoints(points) {
+      this.moveTo(points[0].x, points[0].y);
+      for (let i = 1, l = points.length; i < l; i++) {
+        this.lineTo(points[i].x, points[i].y);
       }
       return this;
     }
@@ -17977,8 +17977,8 @@
     }
   };
   var Shape = class extends Path {
-    constructor(points2) {
-      super(points2);
+    constructor(points) {
+      super(points);
       this.uuid = generateUUID();
       this.type = "Shape";
       this.holes = [];
@@ -18489,10 +18489,10 @@
       return faces;
     }
   };
-  function removeDupEndPts(points2) {
-    const l = points2.length;
-    if (l > 2 && points2[l - 1].equals(points2[0])) {
-      points2.pop();
+  function removeDupEndPts(points) {
+    const l = points.length;
+    if (l > 2 && points[l - 1].equals(points[0])) {
+      points.pop();
     }
   }
   function addContour(vertices, contour) {
@@ -18920,9 +18920,9 @@
       this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
       function addShape(shape) {
         const indexOffset = vertices.length / 3;
-        const points2 = shape.extractPoints(curveSegments);
-        let shapeVertices = points2.shape;
-        const shapeHoles = points2.holes;
+        const points = shape.extractPoints(curveSegments);
+        let shapeVertices = points.shape;
+        const shapeHoles = points.holes;
         if (ShapeUtils.isClockWise(shapeVertices) === false) {
           shapeVertices = shapeVertices.reverse();
         }
@@ -18978,6 +18978,71 @@
       data.shapes.push(shapes.uuid);
     }
     return data;
+  }
+  var WireframeGeometry = class extends BufferGeometry {
+    constructor(geometry2 = null) {
+      super();
+      this.type = "WireframeGeometry";
+      this.parameters = {
+        geometry: geometry2
+      };
+      if (geometry2 !== null) {
+        const vertices = [];
+        const edges = new Set();
+        const start = new Vector3();
+        const end = new Vector3();
+        if (geometry2.index !== null) {
+          const position = geometry2.attributes.position;
+          const indices = geometry2.index;
+          let groups = geometry2.groups;
+          if (groups.length === 0) {
+            groups = [{start: 0, count: indices.count, materialIndex: 0}];
+          }
+          for (let o = 0, ol = groups.length; o < ol; ++o) {
+            const group = groups[o];
+            const groupStart = group.start;
+            const groupCount = group.count;
+            for (let i = groupStart, l = groupStart + groupCount; i < l; i += 3) {
+              for (let j = 0; j < 3; j++) {
+                const index1 = indices.getX(i + j);
+                const index2 = indices.getX(i + (j + 1) % 3);
+                start.fromBufferAttribute(position, index1);
+                end.fromBufferAttribute(position, index2);
+                if (isUniqueEdge(start, end, edges) === true) {
+                  vertices.push(start.x, start.y, start.z);
+                  vertices.push(end.x, end.y, end.z);
+                }
+              }
+            }
+          }
+        } else {
+          const position = geometry2.attributes.position;
+          for (let i = 0, l = position.count / 3; i < l; i++) {
+            for (let j = 0; j < 3; j++) {
+              const index1 = 3 * i + j;
+              const index2 = 3 * i + (j + 1) % 3;
+              start.fromBufferAttribute(position, index1);
+              end.fromBufferAttribute(position, index2);
+              if (isUniqueEdge(start, end, edges) === true) {
+                vertices.push(start.x, start.y, start.z);
+                vertices.push(end.x, end.y, end.z);
+              }
+            }
+          }
+        }
+        this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
+      }
+    }
+  };
+  function isUniqueEdge(start, end, edges) {
+    const hash1 = `${start.x},${start.y},${start.z}-${end.x},${end.y},${end.z}`;
+    const hash2 = `${end.x},${end.y},${end.z}-${start.x},${start.y},${start.z}`;
+    if (edges.has(hash1) === true || edges.has(hash2) === true) {
+      return false;
+    } else {
+      edges.add(hash1, hash2);
+      return true;
+    }
   }
   var ShadowMaterial = class extends Material {
     constructor(parameters) {
@@ -20740,12 +20805,12 @@
     getFrustum() {
       return this._frustum;
     }
-    updateMatrices(light) {
+    updateMatrices(light2) {
       const shadowCamera = this.camera;
       const shadowMatrix = this.matrix;
-      _lightPositionWorld$1.setFromMatrixPosition(light.matrixWorld);
+      _lightPositionWorld$1.setFromMatrixPosition(light2.matrixWorld);
       shadowCamera.position.copy(_lightPositionWorld$1);
-      _lookTarget$1.setFromMatrixPosition(light.target.matrixWorld);
+      _lookTarget$1.setFromMatrixPosition(light2.target.matrixWorld);
       shadowCamera.lookAt(_lookTarget$1);
       shadowCamera.updateMatrixWorld();
       _projScreenMatrix$1.multiplyMatrices(shadowCamera.projectionMatrix, shadowCamera.matrixWorldInverse);
@@ -20798,18 +20863,18 @@
       super(new PerspectiveCamera(50, 1, 0.5, 500));
       this.focus = 1;
     }
-    updateMatrices(light) {
+    updateMatrices(light2) {
       const camera2 = this.camera;
-      const fov2 = RAD2DEG * 2 * light.angle * this.focus;
+      const fov2 = RAD2DEG * 2 * light2.angle * this.focus;
       const aspect2 = this.mapSize.width / this.mapSize.height;
-      const far = light.distance || camera2.far;
+      const far = light2.distance || camera2.far;
       if (fov2 !== camera2.fov || aspect2 !== camera2.aspect || far !== camera2.far) {
         camera2.fov = fov2;
         camera2.aspect = aspect2;
         camera2.far = far;
         camera2.updateProjectionMatrix();
       }
-      super.updateMatrices(light);
+      super.updateMatrices(light2);
     }
     copy(source) {
       super.copy(source);
@@ -20885,15 +20950,15 @@
         new Vector3(0, 0, -1)
       ];
     }
-    updateMatrices(light, viewportIndex = 0) {
+    updateMatrices(light2, viewportIndex = 0) {
       const camera2 = this.camera;
       const shadowMatrix = this.matrix;
-      const far = light.distance || camera2.far;
+      const far = light2.distance || camera2.far;
       if (far !== camera2.far) {
         camera2.far = far;
         camera2.updateProjectionMatrix();
       }
-      _lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
+      _lightPositionWorld.setFromMatrixPosition(light2.matrixWorld);
       camera2.position.copy(_lightPositionWorld);
       _lookTarget.copy(camera2.position);
       _lookTarget.add(this._cubeDirections[viewportIndex]);
@@ -21728,11 +21793,11 @@
       this.getValue = this._getValue_unbound;
       this.setValue = this._setValue_unbound;
     }
-    static create(root, path, parsedPath) {
-      if (!(root && root.isAnimationObjectGroup)) {
-        return new PropertyBinding(root, path, parsedPath);
+    static create(root2, path, parsedPath) {
+      if (!(root2 && root2.isAnimationObjectGroup)) {
+        return new PropertyBinding(root2, path, parsedPath);
       } else {
-        return new PropertyBinding.Composite(root, path, parsedPath);
+        return new PropertyBinding.Composite(root2, path, parsedPath);
       }
     }
     static sanitizeNodeName(name) {
@@ -21763,17 +21828,17 @@
       }
       return results;
     }
-    static findNode(root, nodeName) {
-      if (!nodeName || nodeName === "" || nodeName === "." || nodeName === -1 || nodeName === root.name || nodeName === root.uuid) {
-        return root;
+    static findNode(root2, nodeName) {
+      if (!nodeName || nodeName === "" || nodeName === "." || nodeName === -1 || nodeName === root2.name || nodeName === root2.uuid) {
+        return root2;
       }
-      if (root.skeleton) {
-        const bone = root.skeleton.getBoneByName(nodeName);
+      if (root2.skeleton) {
+        const bone = root2.skeleton.getBoneByName(nodeName);
         if (bone !== void 0) {
           return bone;
         }
       }
-      if (root.children) {
+      if (root2.children) {
         const searchNodeSubtree = function(children) {
           for (let i = 0; i < children.length; i++) {
             const childNode = children[i];
@@ -21786,7 +21851,7 @@
           }
           return null;
         };
-        const subTreeNode = searchNodeSubtree(root.children);
+        const subTreeNode = searchNodeSubtree(root2.children);
         if (subTreeNode) {
           return subTreeNode;
         }
@@ -22530,16 +22595,16 @@
     }
   };
   var AnimationMixer = class extends EventDispatcher {
-    constructor(root) {
+    constructor(root2) {
       super();
-      this._root = root;
+      this._root = root2;
       this._initMemoryManager();
       this._accuIndex = 0;
       this.time = 0;
       this.timeScale = 1;
     }
     _bindAction(action, prototypeAction) {
-      const root = action._localRoot || this._root, tracks = action._clip.tracks, nTracks = tracks.length, bindings = action._propertyBindings, interpolants = action._interpolants, rootUuid = root.uuid, bindingsByRoot = this._bindingsByRootAndName;
+      const root2 = action._localRoot || this._root, tracks = action._clip.tracks, nTracks = tracks.length, bindings = action._propertyBindings, interpolants = action._interpolants, rootUuid = root2.uuid, bindingsByRoot = this._bindingsByRootAndName;
       let bindingsByName = bindingsByRoot[rootUuid];
       if (bindingsByName === void 0) {
         bindingsByName = {};
@@ -22560,7 +22625,7 @@
             continue;
           }
           const path = prototypeAction && prototypeAction._propertyBindings[i].binding.parsedPath;
-          binding = new PropertyMixer(PropertyBinding.create(root, trackName, path), track.ValueTypeName, track.getValueSize());
+          binding = new PropertyMixer(PropertyBinding.create(root2, trackName, path), track.ValueTypeName, track.getValueSize());
           ++binding.referenceCount;
           this._addInactiveBinding(binding, rootUuid, trackName);
           bindings[i] = binding;
@@ -22753,8 +22818,8 @@
       interpolants[prevIndex] = lastActiveInterpolant;
     }
     clipAction(clip, optionalRoot, blendMode) {
-      const root = optionalRoot || this._root, rootUuid = root.uuid;
-      let clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip;
+      const root2 = optionalRoot || this._root, rootUuid = root2.uuid;
+      let clipObject = typeof clip === "string" ? AnimationClip.findByName(root2, clip) : clip;
       const clipUuid = clipObject !== null ? clipObject.uuid : clip;
       const actionsForClip = this._actionsByClip[clipUuid];
       let prototypeAction = null;
@@ -22782,7 +22847,7 @@
       return newAction;
     }
     existingAction(clip, optionalRoot) {
-      const root = optionalRoot || this._root, rootUuid = root.uuid, clipObject = typeof clip === "string" ? AnimationClip.findByName(root, clip) : clip, clipUuid = clipObject ? clipObject.uuid : clip, actionsForClip = this._actionsByClip[clipUuid];
+      const root2 = optionalRoot || this._root, rootUuid = root2.uuid, clipObject = typeof clip === "string" ? AnimationClip.findByName(root2, clip) : clip, clipUuid = clipObject ? clipObject.uuid : clip, actionsForClip = this._actionsByClip[clipUuid];
       if (actionsForClip !== void 0) {
         return actionsForClip.actionByRoot[rootUuid] || null;
       }
@@ -22836,8 +22901,8 @@
         delete actionsByClip[clipUuid];
       }
     }
-    uncacheRoot(root) {
-      const rootUuid = root.uuid, actionsByClip = this._actionsByClip;
+    uncacheRoot(root2) {
+      const rootUuid = root2.uuid, actionsByClip = this._actionsByClip;
       for (const clipUuid in actionsByClip) {
         const actionByRoot = actionsByClip[clipUuid].actionByRoot, action = actionByRoot[rootUuid];
         if (action !== void 0) {
@@ -22941,10 +23006,10 @@
       this.max.copy(max);
       return this;
     }
-    setFromPoints(points2) {
+    setFromPoints(points) {
       this.makeEmpty();
-      for (let i = 0, il = points2.length; i < il; i++) {
-        this.expandByPoint(points2[i]);
+      for (let i = 0, il = points.length; i < il; i++) {
+        this.expandByPoint(points[i]);
       }
       return this;
     }
@@ -23189,9 +23254,9 @@
     construct.prototype.getPoint = getPoint;
     return construct;
   };
-  Path.prototype.fromPoints = function(points2) {
+  Path.prototype.fromPoints = function(points) {
     console.warn("THREE.Path: .fromPoints() has been renamed to .setFromPoints().");
-    return this.setFromPoints(points2);
+    return this.setFromPoints(points);
   };
   GridHelper.prototype.setColors = function() {
     console.error("THREE.GridHelper: setColors() has been deprecated, pass them in the constructor instead.");
@@ -24134,24 +24199,33 @@
   }
 
   // src/script.js
-  var renderer = new WebGL1Renderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-  var camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
-  camera.position.set(0, 0, 100);
+  var renderer = new WebGL1Renderer({antialias: true, alpha: true});
+  var stage = document.querySelectorAll(".stage")[0];
+  var root = document.querySelectorAll("#three-root")[0];
+  renderer.setSize(root.offsetWidth, root.offsetHeight);
+  root.appendChild(renderer.domElement);
+  renderer.setClearColor(0, 0);
+  var camera = new PerspectiveCamera(45, root.offsetWidth / root.offsetHeight, 1, 500);
+  camera.position.set(0, 0, 10);
   camera.lookAt(0, 0, 0);
   var scene = new Scene();
-  var material = new LineBasicMaterial({color: 255});
-  var points = [];
-  points.push(new Vector3(-10, 0, 0));
-  points.push(new Vector3(30, 10, 0));
-  points.push(new Vector3(10, 0, 0));
-  var geometry = new BufferGeometry().setFromPoints(points);
-  var line = new Line(geometry, material);
+  var geometry = new BoxGeometry(1, 1, 1);
+  var material = new MeshPhongMaterial({
+    color: 11189247
+  });
+  var cube = new Mesh(geometry, material);
+  scene.add(cube);
+  var wireframe = new WireframeGeometry(geometry);
+  var line = new LineSegments(wireframe);
+  line.material.color.setHex(0);
   scene.add(line);
+  var light = new AmbientLight(15790320);
+  scene.add(light);
   function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
     line.rotation.x += 0.01;
     line.rotation.y += 0.01;
   }
